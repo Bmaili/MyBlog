@@ -1,25 +1,23 @@
 ---
-title: 虚拟机
-date: 2021-07-21 12:39:18
+title: HotSpot虚拟机对象
+date: 2021-10-06 12:13:22
 tags:
 - JVM
 - Java
-- 内存
 comments: true
 toc: true
 categories:
 - [JVM]
-excerpt: 关于HotSpot虚拟机内存模型的笔记
-password: 287100
+excerpt: 深入理解Java虚拟机，HotSpot虚拟机对象
+password: 222892
 ---
 
 
 
 
+## HotSpot虚拟机对象
 
-## HotSpot虚拟机对象探秘
-
-![image-20210330233053370](/images/HotSpot虚拟机对象探秘/image-20210330233053370.png)
+![](http://bmalimarkdown.oss-cn-beijing.aliyuncs.com/img/image-20220306150819575.png)
 
 ### 对象的创建
 
@@ -49,7 +47,7 @@ password: 287100
 
     - 过程: 使用过的空间放在一边,空闲的空间放在另一边,中间有一个指针作为分界点指示器,把新生对象放在使用过空间的那一边,中间指针向空闲空间那边挪动一个新生对象的内存大小的距离即可 
 
-    	![image-20201028174425589](/images/HotSpot虚拟机对象探秘/image-20201028174425589.png)
+    	![](http://bmalimarkdown.oss-cn-beijing.aliyuncs.com/img/image-20220306150940858.png)
 
     - 特点:==简单,高效==,因为要堆内存规整整齐,所以垃圾收集器应该要有==压缩整理==的能力
 
@@ -76,7 +74,7 @@ password: 287100
 
 (当对象满足不会逃逸条件除了能够优化在栈上分配内存还会带来锁消除,标量替换等优化...)
 
-![image-20201124164550072](/images/HotSpot虚拟机对象探秘/image-20201124164550072.png)
+![](http://bmalimarkdown.oss-cn-beijing.aliyuncs.com/img/image-20220306150847711.png)
 
 1. 尝试该对象能不能在栈上分配内存
 2. 如果不符合1,且该对象特别的大,比如内存超过了JVM设置的大对象的值就直接在老年代上为它分配内存
@@ -93,7 +91,7 @@ password: 287100
 
 **哪个线程要分配内存就在那个线程的缓冲区上分配,只有缓冲区满了,不够了才使用乐观的同步策略(CAS+失败重试)保证分配内存的原子性**
 
-![img](/images/HotSpot虚拟机对象探秘/H5E8G`ID6K[XUO5C4C@SW{J.png)
+![](http://bmalimarkdown.oss-cn-beijing.aliyuncs.com/img/image-20220306151002073.png)
 
 
 
@@ -175,7 +173,7 @@ password: 287100
         </dependency>
 ```
 
-![image-20201124171137539](/images/HotSpot虚拟机对象探秘/image-20201124171137539.png)
+![](http://bmalimarkdown.oss-cn-beijing.aliyuncs.com/img/image-20220306151017333.png)
 
 mark word : 8 byte
 
@@ -187,7 +185,7 @@ mark word : 8 byte
 
 >  int[] ints = new int[5]; //占多少内存?
 
-![image-20201124171539813](/images/HotSpot虚拟机对象探秘/image-20201124171539813.png)
+![](http://bmalimarkdown.oss-cn-beijing.aliyuncs.com/img/image-20220306151026271.png)
 
 mark word:8 byte
 
@@ -203,7 +201,7 @@ mark word:8 byte
 
 > 父类私有字段到底能不能被子类继承?
 
-![image-20201124173533826](/images/HotSpot虚拟机对象探秘/image-20201124173533826.png)
+![](http://bmalimarkdown.oss-cn-beijing.aliyuncs.com/img/image-20220306151034939.png)
 
 
 
@@ -211,7 +209,7 @@ mark word:8 byte
 
 #### 结构图
 
-![image-20210429190053375](/images/HotSpot虚拟机对象探秘/image-20210429190053375.png)
+![](http://bmalimarkdown.oss-cn-beijing.aliyuncs.com/img/image-20220306151103408.png)
 
 
 
@@ -227,7 +225,7 @@ mark word:8 byte
 
 - 句柄访问
 
-	![image-20201109182633606](/images/HotSpot虚拟机对象探秘/image-20201109182633606.png)
+	![](http://bmalimarkdown.oss-cn-beijing.aliyuncs.com/img/image-20220306151113217.png)
 
 	- 在堆中开辟一块内存作为句柄池,栈中的**reference数据存储的是该对象句柄池的地址**,**句柄中包含了对象实例数据和对象类型数据**
 	- **优点: 稳定,对象被移动时(压缩-整理算法),只需要改动该句柄的对象实例数据指针**
@@ -235,7 +233,7 @@ mark word:8 byte
 
 - 直接指针访问
 
-	![image-20201109182806454](/images/HotSpot虚拟机对象探秘/image-20201109182806454.png)
+	![](http://bmalimarkdown.oss-cn-beijing.aliyuncs.com/img/image-20220306151129374.png)
 
 	- 栈中的reference数据存储堆中该对象的地址(reference指向该对象),但是**对象的内存布局需要保存对象类型数据**
 	- **优点: 访问速度快**
